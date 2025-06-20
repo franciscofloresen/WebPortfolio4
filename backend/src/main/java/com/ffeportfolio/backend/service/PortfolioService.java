@@ -23,11 +23,10 @@ public class PortfolioService {
 
         // Información General
         data.setName("Francisco Flores Enríquez");
-        data.setTitle("Computer Systems Engineering");
+        data.setTitle("Computer Systems Engineering & Full-Stack Developer");
 
         // Información de Contacto
         Contact contact = new Contact();
-        contact.setPhone("312-193-8334");
         contact.setEmail("franciscofloresenriquez2001@gmail.com");
         contact.setLinkedin("https://www.linkedin.com/in/francisco-flores-89230b25b/");
         contact.setGithub("https://github.com/franciscofloresen");
