@@ -49,7 +49,7 @@ const ProjectCard = ({ project }) => (
     </div>
 );
 
-// Mapeo de categorías de habilidades a iconos
+// Mapeo de categorías de habilidades a iconoss
 const technicalSkillIcons = {
   "Languages": <Code size={24} className="text-blue-500" />,
   "Development": <Cpu size={24} className="text-green-500" />,
