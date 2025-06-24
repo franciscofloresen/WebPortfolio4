@@ -260,7 +260,7 @@ export default function App() {
             <div className="max-w-2xl mx-auto bg-gradient-to-r from-blue-500 to-purple-600 p-8 md:p-12 rounded-xl shadow-2xl text-white">
               <h2 className="text-3xl font-bold mb-4">Get In Touch</h2>
               <p className="max-w-xl mx-auto text-lg text-blue-100 mb-8">
-                I'm currently seeking internship opportunities. Let's connect!
+                I'm currently seeking internship or recent graduate opportunities. Let's connect!
               </p>
               <a
                   href={`mailto:${portfolioData.contact.email}`}
