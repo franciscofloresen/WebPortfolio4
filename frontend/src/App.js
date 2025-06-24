@@ -91,8 +91,8 @@ export default function App() {
     const fetchData = async () => {
       try {
         // Apunta a tu backend de Spring Boot que se ejecuta en el puerto 8080.
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080/api/portfolio';
-        const response = await fetch(apiUrl);
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+        const response = await fetch(`${apiUrl}/api/portfolio`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
