@@ -84,15 +84,10 @@ export default function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // ---- LA CORRECCIÓN ESTÁ AQUÍ ----
-      // 1. Definimos la URL base. En producción, usa la variable de entorno PROD_API_URL.
-      //    En desarrollo (local), usa localhost:8080.
-      const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+      // La URL es ahora una ruta relativa. CloudFront sabe a dónde enviarla.
+      const fullApiUrl = '/api/portfolio';
 
-      // 2. Construimos la URL completa y correcta para el endpoint.
-      const fullApiUrl = `${baseUrl}/api/portfolio`;
-
-      console.log("Fetching data from:", fullApiUrl); // Para depurar
+      console.log("Fetching data from relative path:", fullApiUrl);
 
       try {
         const response = await fetch(fullApiUrl);
