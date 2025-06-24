@@ -135,7 +135,7 @@ export default function App() {
     return <div className="flex justify-center items-center h-screen bg-red-100 text-red-700 p-4">Error fetching portfolio data: Error: HTTP error! status: 403. Check browser console for details.</div>;
   }
 
-  // Renderiza el componente una vez que los datos están disponibles
+  // Renderiza el componente una vez que los datos están disponibles lol
   return (
       <div className={`font-sans bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-500`}>
         {/* Header */}
