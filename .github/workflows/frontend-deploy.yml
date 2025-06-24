@@ -1,0 +1,45 @@
+name: Deploy Frontend to AWS S3 and CloudFront
+
+on:
+  push:
+    branches:
+      - main # Se activa cuando subes código a la rama main
+    paths:
+      - 'frontend/**' # Solo se activa si hay cambios en la carpeta del frontend
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend # Ejecuta todos los comandos desde la carpeta del frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React App
+        run: npm run build
+        env:
+          REACT_APP_API_URL: ${{ secrets.PROD_API_URL }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3
+        run: aws s3 sync ./build s3://ffe-portfolio-frontend
+
+      - name: Invalidate CloudFront Cache
+        run: aws cloudfront create-invalidation --distribution-id E2MRME2S50H2PS  --paths "/*"
