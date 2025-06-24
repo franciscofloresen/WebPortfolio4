@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Este es el controlador REST.
- * Define los endpoints (URLs) del API que el frontend puede llamar.lol
+ * Define los endpoints (URLs) del API que el frontend puede llamar.
  */
 @RestController // Marca esta clase como un controlador que maneja peticiones REST.
 @RequestMapping("/api/portfolio") // Define la URL base para todos los endpoints en esta clase.
