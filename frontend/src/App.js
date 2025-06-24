@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Briefcase, Code, Mail, Linkedin, Github, ExternalLink, Menu, X, BrainCircuit, Users, Lightbulb, TrendingUp, Cpu, Database, Cloud, GitBranch } from 'lucide-react';
 
-//============== HELPER COMPONENTS (No necesitan cambios) ==============
+//============== HELPER COMPONENTS ==============
 
 const ThemeToggle = ({ isDarkMode, toggleTheme }) => (
     <button
@@ -49,7 +49,6 @@ const ProjectCard = ({ project }) => (
     </div>
 );
 
-// Mapeo de categorías de habilidades a iconos
 const technicalSkillIcons = {
   "Languages": <Code size={24} className="text-blue-500" />,
   "Development": <Cpu size={24} className="text-green-500" />,
@@ -69,30 +68,34 @@ const TechnicalSkillCard = ({ skill }) => (
 );
 
 
-//============== MAIN APP COMPONENT (ACTUALIZADO PARA USAR EL BACKEND) ==============
+//============== MAIN APP COMPONENT ==============
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Estado para guardar los datos del portfolio que vienen del backend
   const [portfolioData, setPortfolioData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect para manejar el tema oscuro
   useEffect(() => {
     const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     setIsDarkMode(userPrefersDark);
     document.documentElement.classList.toggle('dark', userPrefersDark);
   }, []);
 
-  // useEffect para hacer la llamada al API cuando el componente se monta
   useEffect(() => {
     const fetchData = async () => {
+      // ---- LA CORRECCIÓN ESTÁ AQUÍ ----
+      // 1. Definimos la URL base. En producción, usa la variable de entorno PROD_API_URL.
+      //    En desarrollo (local), usa localhost:8080.
+      const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
+      // 2. Construimos la URL completa y correcta para el endpoint.
+      const fullApiUrl = `${baseUrl}/api/portfolio`;
+
+      console.log("Fetching data from:", fullApiUrl); // Para depurar
+
       try {
-        // Apunta a tu backend de Spring Boot que se ejecuta en el puerto 8080.
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
-        const response = await fetch(`${apiUrl}/api/portfolio`);
+        const response = await fetch(fullApiUrl);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -107,7 +110,7 @@ export default function App() {
     };
 
     fetchData();
-  }, []); // El array vacío asegura que esto se ejecute solo una vez
+  }, []);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -124,14 +127,12 @@ export default function App() {
     { href: "#contact", label: "Contact" },
   ];
 
-  // Muestra un mensaje de carga mientras se obtienen los datos
   if (loading) {
     return <div className="flex justify-center items-center h-screen bg-gray-50 dark:bg-gray-900 text-xl">Loading Portfolio...</div>;
   }
 
-  // Muestra un mensaje de error si la llamada al API falla
   if (error) {
-    return <div className="flex justify-center items-center h-screen bg-red-100 text-red-700">Error: {error}. Is the Java backend running?</div>;
+    return <div className="flex justify-center items-center h-screen bg-red-100 text-red-700 p-4">Error fetching portfolio data: Error: HTTP error! status: 403. Check browser console for details.</div>;
   }
 
   // Renderiza el componente una vez que los datos están disponibles
@@ -261,7 +262,7 @@ export default function App() {
             <div className="max-w-2xl mx-auto bg-gradient-to-r from-blue-500 to-purple-600 p-8 md:p-12 rounded-xl shadow-2xl text-white">
               <h2 className="text-3xl font-bold mb-4">Get In Touch</h2>
               <p className="max-w-xl mx-auto text-lg text-blue-100 mb-8">
-                I'm currently seeking internship or recent graduate opportunities. Let's connect!
+                I'm currently seeking internship opportunities. Let's connect!
               </p>
               <a
                   href={`mailto:${portfolioData.contact.email}`}
