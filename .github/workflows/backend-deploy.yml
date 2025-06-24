@@ -28,25 +28,15 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      # NOTA: Este paso se queda, es buena práctica, pero añadiremos las credenciales abajo también.
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
-          # --- AÑADIMOS ESTAS TRES LÍNEAS ---
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          # ------------------------------------
+          # --- CORRECCIÓN: El parámetro se llama 'region' ---
+          region: ${{ secrets.AWS_REGION }}
+          # --------------------------------------------------
           application_name: portfolio-backend
           environment_name: portfolio-backend-prod
-          version_label: "v${{ github.run_number }}"
-          # La región ya la pasamos arriba, pero la dejamos por si acaso
-          region: ${{ secrets.AWS_REGION }}
+          version_label: "v${{ github.run_number }}-${{ github.sha }}" # Versión más única
           deployment_package: backend/target/backend-0.0.1-SNAPSHOT.jar
